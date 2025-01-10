@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import {
   Container,
   TextField,
@@ -17,6 +17,7 @@ const EnquiryPage = () => {
     message: "",
   });
   const [responseMessage, setResponseMessage] = useState("");
+  const [showMessage, setShowMessage] = useState(false); // State for message visibility
 
   // Handle input change
   const handleChange = (e) => {
@@ -25,17 +26,19 @@ const EnquiryPage = () => {
   };
 
   // Handle form submission
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8099/api/send-email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "https://cevirams.onrender.com/api/send-email",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const data = await response.json();
       if (response.ok) {
@@ -47,11 +50,39 @@ const EnquiryPage = () => {
     } catch (error) {
       setResponseMessage("An error occurred. Please try again.",error);
     }
+
+    // Show the message and set a timeout to hide it after 2 seconds
+    setShowMessage(true);
+    setTimeout(() => {
+      setShowMessage(false);
+    }, 2000);
   };
 
   return (
     <>
       <Container maxWidth="xl" sx={{ marginTop: 10 }}>
+        {/* Response message */}
+        {showMessage && (
+          <Box
+            sx={{
+              position: "fixed",
+              top: 0,
+              left: "50%",
+              transform: "translateX(-50%)",
+              zIndex: 1000,
+              backgroundColor: responseMessage.includes("successfully")
+                ? "green"
+                : "red",
+              color: "white",
+              padding: "10px 20px",
+              borderRadius: "5px",
+              textAlign: "center",
+            }}
+          >
+            {responseMessage}
+          </Box>
+        )}
+
         {/* Contact Information Section */}
         <Box
           sx={{
@@ -98,7 +129,10 @@ const EnquiryPage = () => {
                     href="https://www.google.com/maps?q=228+Yishun+Street+21,+#05-482,+Singapore+(760228)"
                     target="_blank"
                     rel="noopener"
-                    sx={{ color: "primary.main", textDecoration: "underline" }}
+                    sx={{
+                      color: "primary.main",
+                      textDecoration: "underline",
+                    }}
                   >
                     View on Google Maps
                   </Link>
@@ -109,6 +143,8 @@ const EnquiryPage = () => {
                   <strong>Contact Number:</strong>
                   <br />
                   +65-66802065
+                  <br />
+                  +65-83057419
                 </Typography>
                 <Typography variant="body1">
                   <strong>Email Id:</strong>
@@ -199,18 +235,6 @@ const EnquiryPage = () => {
                   Submit
                 </Button>
               </form>
-              {responseMessage && (
-                <Typography
-                  variant="body2"
-                  color={
-                    responseMessage.includes("successfully") ? "green" : "error"
-                  } // Green for success, red for error
-                  align="center"
-                  sx={{ marginTop: 2 }}
-                >
-                  {responseMessage}
-                </Typography>
-              )}
             </Paper>
           </Box>
         </Box>

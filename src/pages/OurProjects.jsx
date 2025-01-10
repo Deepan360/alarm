@@ -23,11 +23,11 @@ const OurProjects = () => {
       description: "Electrical & ELV Systems",
       image: "/assets/image/OGH-Building.jpg", // Replace with the actual image URL
     },
-    {
-      title: "Worker’s Dormitory @ 11 Kanji Crescent",
-      description: "Fire Protection System",
-      image: "/assets/image/a1.jpg", // Replace with the actual image URL
-    },
+    // {
+    //   title: "Worker’s Dormitory @ 11 Kanji Crescent", 
+    //   description: "Fire Protection System",
+    //   image: "/assets/image/a1.jpg", // Replace with the actual image URL
+    // },
     {
       title: "Temporary Ancillary Workers' Dormitory @ Chin Bee Avenue",
       description: "Fire Protection System",
